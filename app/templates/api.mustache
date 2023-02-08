@@ -1,0 +1,43 @@
+package {{apiPackage}}
+
+import retrofit2.http.*
+{{#imports}}{{#-first}}import {{modelPackage}}.*{{/-first}}{{/imports}}
+
+{{#operations}}
+public interface {{classname}} {
+{{#operation}}
+
+    /**
+     * {{{summary}}}
+     *
+     * Responses:
+{{#responses}}
+     *  - {{code}}: {{message}}
+{{/responses}}
+     *
+{{#allParams}}
+     * @param {{baseName}} {{description}}
+{{/allParams}}
+{{#returnType}}
+     * @return [{{returnType}}]
+{{/returnType}}
+     */
+    @{{httpMethod}}("{{path}}")
+    public suspend fun {{operationId}}(
+    {{#hasPathParams}}
+    {{#pathParams}}
+        @Path("{{baseName}}") {{paramName}}: String,
+    {{/pathParams}}
+    {{/hasPathParams}}
+    {{#hasQueryParams}}
+    {{#queryParams}}
+        @Query("{{baseName}}") {{paramName}}: {{dataType}}{{^required}}? = null{{/required}},
+    {{/queryParams}}
+    {{/hasQueryParams}}
+    {{#hasBodyParam}}
+        {{#bodyParam}}@Body {{baseName}}: {{baseType}}{{/bodyParam}},
+    {{/hasBodyParam}}
+    ): {{{returnType}}}{{^returnType}}Unit{{/returnType}}
+{{/operation}}
+}
+{{/operations}}

@@ -34,6 +34,7 @@ class MovieDetailsViewModel @Inject constructor(
     val movieId =
       navHostController.currentBackStackEntry?.arguments?.getString("movieId")?.let(::MovieId)
     if (movieId != null) {
+      _state.update { it.copy(movieId = movieId) }
       load(movieId)
       repository.observeMovieDetailsById(movieId)
         .filterNotNull()

@@ -31,8 +31,8 @@ fun MovieDetails.toUiModel(): UiMovieDetails {
     overview = overview,
     posterUrl = posterUrl?.value,
     releaseDate = releaseDate?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)),
-    budget = budgetUsd?.let { "$ $it" },
-    revenue = revenueUsd?.let { "$ $it" },
+    budget = budgetUsd?.let { "$ ${it.amount}" },
+    revenue = revenueUsd?.let { "$ ${it.amount}" },
     genres = genres,
     duration = duration?.format(),
     rating = rating?.let {

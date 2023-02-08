@@ -1,0 +1,33 @@
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+* {{{description}}}
+* Values: {{#allowableValues}}{{#enumVars}}{{&name}}{{^-last}},{{/-last}}{{/enumVars}}{{/allowableValues}}
+*/
+@Serializable
+public enum class {{classname}}(public val value: {{{dataType}}}) {
+
+{{#allowableValues}}{{#enumVars}}
+    @SerialName(value = "{{&name}}")
+    {{#isArray}}
+    {{#isList}}
+    {{&name}}(listOf({{{value}}})){{^-last}},{{/-last}}{{#-last}};{{/-last}}
+    {{/isList}}
+    {{^isList}}
+    {{&name}}(arrayOf({{{value}}})){{^-last}},{{/-last}}{{#-last}};{{/-last}}
+    {{/isList}}
+    {{/isArray}}
+    {{^isArray}}
+    {{&name}}({{{value}}}){{^-last}},{{/-last}}{{#-last}};{{/-last}}
+    {{/isArray}}
+{{/enumVars}}{{/allowableValues}}
+
+    /**
+    This override toString avoids using the enum var name and uses the actual api value instead.
+    In cases the var name and value are different, the client would send incorrect enums to the server.
+    **/
+    override fun toString(): String {
+        return value{{^isString}}.toString(){{/isString}}
+    }
+}

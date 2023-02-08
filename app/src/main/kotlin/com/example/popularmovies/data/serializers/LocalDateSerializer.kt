@@ -1,4 +1,4 @@
-package com.example.popularmovies.data
+package com.example.popularmovies.data.serializers
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

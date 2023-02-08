@@ -6,6 +6,7 @@ import com.example.popularmovies.domain.entity.MovieId
 import com.example.popularmovies.domain.entity.MoviePreview
 import com.example.popularmovies.domain.entity.MovieRating
 import com.example.popularmovies.domain.entity.Url
+import com.example.popularmovies.domain.entity.Usd
 import java.time.Duration
 import java.time.LocalDate
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class MoviesMockRepository @Inject constructor() : MoviesRepository {
     return _movieDetails.map { it[id] }
   }
 
-  override suspend fun fetchPopularMovies(language: String, page: Int, region: String) {
+  override suspend fun fetchPopularMovies(language: String, page: Long, region: String) {
     _popularMovies.update {
       (0 until 10).map { number -> generateRandomMoviePreview(MovieId(number)) }
     }
@@ -85,8 +86,8 @@ class MoviesMockRepository @Inject constructor() : MoviesRepository {
         posterUrl = moviePreview?.posterUrl ?: Url("$POSTER_BASE_URL${posterPaths.random()}"),
         releaseDate = moviePreview?.releaseDate
           ?: LocalDate.now().minusDays(Random.nextLong(30, 200)),
-        budgetUsd = Random.nextLong(1_000_000, 300_000_000),
-        revenueUsd = Random.nextLong(1_000_000, 300_000_000),
+        budgetUsd = Usd(Random.nextLong(1_000_000, 300_000_000)),
+        revenueUsd = Usd(Random.nextLong(1_000_000, 300_000_000)),
         genres = generateRandomGenres(),
         duration = Duration.ofMinutes(Random.nextLong(80, 180)),
         rating = moviePreview?.rating ?: MovieRating(

@@ -1,0 +1,169 @@
+openapi: 3.0.0
+x-stoplight:
+  id: rv4unfrv4p4eu
+info:
+  title: movie-db-api
+  version: '1.0'
+  description: Obtaining information about movies from TMDB API
+servers:
+  - url: 'https://api.themoviedb.org'
+paths:
+  /3/movie/popular:
+    get:
+      summary: GetPopularMovies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PopularMovies'
+      operationId: get-popular-movies
+      parameters:
+        - schema:
+            type: string
+            default: en-US
+            pattern: '([a-z]{2})-([A-Z]{2})'
+            minLength: 2
+          in: query
+          name: language
+          description: 'Pass a ISO 639-1 value to display translated data for the fields that support it. '
+        - schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 1
+          in: query
+          name: page
+          description: Specify which page to query.
+        - schema:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          in: query
+          name: region
+          description: Specify a ISO 3166-1 code to filter release dates. Must be uppercase.
+      description: Get a list of the current popular movies on TMDB. This list updates daily.
+      tags:
+        - MovieService
+  '/3/movie/{movie_id}':
+    get:
+      summary: GetMovieDetails
+      tags:
+        - MovieService
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDetails'
+      operationId: get-movie-details
+      parameters:
+        - schema:
+            type: string
+            pattern: '([a-z]{2})-([A-Z]{2})'
+            default: en-US
+            minLength: 2
+          in: query
+          name: language
+          description: Pass a ISO 639-1 value to display translated data for the fields that support it.
+      description: Get the primary information about a movie.
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: movie_id
+        in: path
+        required: true
+components:
+  schemas:
+    MoviePreview:
+      title: MoviePreview
+      x-stoplight:
+        id: 698a4f22ba684
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        original_title:
+          type: string
+        poster_path:
+          type: string
+        release_date:
+          type: string
+          format: date
+        vote_count:
+          type: integer
+          format: int64
+        vote_average:
+          type: number
+          format: double
+      required:
+        - id
+    PopularMovies:
+      title: PopularMovies
+      x-stoplight:
+        id: aa9d11429d7ed
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoviePreview'
+      required:
+        - results
+    MovieDetails:
+      title: MovieDetails
+      x-stoplight:
+        id: 8xhl3nv37lss2
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        original_title:
+          type: string
+        overview:
+          type: string
+        poster_path:
+          type: string
+        release_date:
+          type: string
+          format: date
+        budget:
+          type: integer
+          format: usd
+        revenue:
+          type: integer
+          format: usd
+        runtime:
+          type: integer
+          format: int64
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        vote_count:
+          type: integer
+          format: int64
+        vote_average:
+          type: number
+          format: double
+      required:
+        - id
+    Genre:
+      title: Genre
+      x-stoplight:
+        id: vot3kf2e1gu39
+      type: object
+      properties:
+        name:
+          type: string
+  securitySchemes: {}
+tags:
+  - name: MovieService

@@ -5,11 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
 import com.example.popularmovies.BuildConfig
-import com.example.popularmovies.data.MoviesApi
 import com.example.popularmovies.data.MoviesDataRepository
 import com.example.popularmovies.data.MoviesMockRepository
 import com.example.popularmovies.data.interceptor.ApiKeyQueryInterceptor
 import com.example.popularmovies.domain.MoviesRepository
+import com.example.popularmovies.schema.api.MovieServiceApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Binds
 import dagger.Module
@@ -17,6 +17,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -96,8 +97,20 @@ interface ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create()
+    fun provideMovieServiceApi(retrofit: Retrofit): MovieServiceApi = retrofit.create()
   }
 }
 
 private const val BASE_TMBD_URL = "https://api.themoviedb.org/"
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ApiKeyInterceptor
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Prod
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Mock

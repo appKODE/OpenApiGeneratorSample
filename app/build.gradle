@@ -4,10 +4,10 @@ plugins {
   id 'org.jetbrains.kotlin.plugin.serialization'
   id 'kotlin-kapt'
   id 'com.google.dagger.hilt.android'
-//  id "org.openapi.generator"
+  id "org.openapi.generator"
 }
 
-//import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 android {
   namespace 'com.example.popularmovies'
@@ -56,13 +56,30 @@ android {
       excludes += '/META-INF/{AL2.0,LGPL2.1}'
     }
   }
-//  sourceSets.main.kotlin.srcDirs += "$buildDir.path/openapi"
-//  tasks.preBuild {
-//    dependsOn(tasks.withType(GenerateTask))
-//  }
-//  tasks.withType(GenerateTask) {
-//    it.outputs.cacheIf { false }
-//  }
+  sourceSets.main.kotlin.srcDirs += "${buildDir.path}/openapi"
+  tasks.preBuild {
+    dependsOn(tasks.withType(GenerateTask))
+  }
+}
+
+openApiGenerate {
+  generatorName = "kotlin"
+  inputSpec = "${projectDir.path}/movie-db-api.yaml"
+  outputDir = "${buildDir.path}/openapi"
+  ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"
+  apiPackage = "com.example.popularmovies.schema.api"
+  modelPackage = "com.example.popularmovies.schema.model"
+  templateDir = "${projectDir.path}/templates"
+  additionalProperties = [
+    "serializersPackage": "com.example.popularmovies.data.serializers"
+  ]
+  typeMappings = [
+    "integer": "kotlin.Long",
+    "integer+usd": "Usd"
+  ]
+  importMappings = [
+    "Usd": "com.example.popularmovies.domain.entity.Usd"
+  ]
 }
 
 dependencies {

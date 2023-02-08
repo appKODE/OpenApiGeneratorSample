@@ -10,8 +10,8 @@ data class MovieDetails(
   val overview: String? = null,
   val posterUrl: Url? = null,
   val releaseDate: LocalDate? = null,
-  val budgetUsd: Long? = null,
-  val revenueUsd: Long? = null,
+  val budgetUsd: Usd? = null,
+  val revenueUsd: Usd? = null,
   val genres: List<String> = emptyList(),
   val duration: Duration? = null,
   val rating: MovieRating? = null

@@ -5,6 +5,7 @@ import com.example.popularmovies.domain.MoviesRepository
 import com.example.popularmovies.domain.entity.MovieDetails
 import com.example.popularmovies.domain.entity.MovieId
 import com.example.popularmovies.domain.entity.MoviePreview
+import com.example.popularmovies.schema.api.MovieServiceApi
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 class MoviesDataRepository @Inject constructor(
-  private val api: MoviesApi,
+  private val api: MovieServiceApi,
 ) : MoviesRepository {
   private val _popularMovies = MutableStateFlow<List<MoviePreview>>(emptyList())
   private val _movieDetails = MutableStateFlow<Map<MovieId, MovieDetails>>(emptyMap())
@@ -23,7 +24,7 @@ class MoviesDataRepository @Inject constructor(
 
   override suspend fun fetchPopularMovies(
     language: String,
-    page: Int,
+    page: Long,
     region: String,
   ) {
     _popularMovies.update {

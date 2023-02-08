@@ -1,0 +1,55 @@
+import kotlinx.serialization.*
+{{#serializersPackage}}import {{serializersPackage}}.*{{/serializersPackage}}
+
+/**
+ * {{{description}}}
+{{#allVars}}
+ * @param {{{name}}} {{{description}}}
+{{/allVars}}
+ */
+{{^discriminator}}@Serializable{{/discriminator}}
+{{#isDeprecated}}
+@Deprecated(message = "This schema is deprecated.")
+{{/isDeprecated}}
+public {{#discriminator}}interface{{/discriminator}}{{^discriminator}}data class{{/discriminator}} {{classname}}{{^discriminator}} (
+{{#parentModel}}{{#vars}}
+    {{^isFreeFormObject}}{{#isDate}}@Serializable(with = LocalDateSerializer::class)
+    {{/isDate}}{{#required}}@SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") @Required override {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}@SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") override {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}?{{/required}},{{/isFreeFormObject}}
+{{/vars}}
+{{/parentModel}}{{#vars}}
+    {{^isFreeFormObject}}{{#isDate}}@Serializable(with = LocalDateSerializer::class)
+    {{/isDate}}{{^isInherited}}{{#required}}@SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") @Required {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}@SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}?{{/required}},{{/isInherited}}{{/isFreeFormObject}}
+{{/vars}}
+){{/discriminator}}{{#parent}} : {{parent}} {{/parent}}{{#vendorExtensions.x-has-data-class-body}} {
+{{/vendorExtensions.x-has-data-class-body}}
+{{#discriminator}}{{#vars}}{{#required}}
+    {{#description}}
+    /* {{{description}}} */
+    {{/description}}
+    @SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") @Required public {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#isNullable}}?{{/isNullable}}
+{{/required}}{{^required}}
+    {{#description}}
+        /* {{{description}}} */
+    {{/description}}
+    @SerialName(value = "{{{vendorExtensions.x-base-name-literal}}}") public {{>modelMutable}} {{{name}}}: {{#isEnum}}{{#isListContainer}}{{#isList}}kotlin.collections.List{{/isList}}{{^isList}}kotlin.Array{{/isList}}<{{classname}}.{{{nameInCamelCase}}}>{{/isListContainer}}{{^isListContainer}}{{classname}}.{{{nameInCamelCase}}}{{/isListContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}?{{/required}}{{/vars}}{{/discriminator}}
+{{#hasEnums}}
+{{#vars}}
+{{#isEnum}}
+    /**
+     * {{{description}}}
+     * Values: {{#allowableValues}}{{#enumVars}}{{&name}}{{^-last}},{{/-last}}{{/enumVars}}{{/allowableValues}}
+     */
+    @Serializable
+    public enum class {{{nameInCamelCase}}}(public val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
+    {{#allowableValues}}
+    {{#enumVars}}
+        @SerialName(value = "{{&name}}") {{&name}}("{{&name}}"){{^-last}},{{/-last}}
+    {{/enumVars}}
+    {{/allowableValues}}
+    }
+{{/isEnum}}
+{{/vars}}
+{{/hasEnums}}
+{{#vendorExtensions.x-has-data-class-body}}
+}
+{{/vendorExtensions.x-has-data-class-body}}
