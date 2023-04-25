@@ -6,7 +6,6 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
 import com.example.popularmovies.BuildConfig
 import com.example.popularmovies.data.MoviesDataRepository
-import com.example.popularmovies.data.MoviesMockRepository
 import com.example.popularmovies.data.interceptor.ApiKeyQueryInterceptor
 import com.example.popularmovies.domain.MoviesRepository
 import com.example.popularmovies.schema.api.MovieServiceApi
@@ -34,13 +33,7 @@ import retrofit2.create
 interface ApplicationModule {
   @Binds
   @Singleton
-  @Mock
-  fun bindMoviesMockRepository(impl: MoviesMockRepository): MoviesRepository
-
-  @Binds
-  @Singleton
-  @Prod
-  fun bindMoviesProdRepository(impl: MoviesDataRepository): MoviesRepository
+  fun bindMoviesRepository(impl: MoviesDataRepository): MoviesRepository
 
   companion object {
     @Provides
@@ -106,11 +99,3 @@ private const val BASE_TMBD_URL = "https://api.themoviedb.org/"
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ApiKeyInterceptor
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class Prod
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class Mock

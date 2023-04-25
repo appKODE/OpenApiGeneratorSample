@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.example.popularmovies.di.Prod
 import com.example.popularmovies.domain.MoviesRepository
 import com.example.popularmovies.ui.screen.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class PopularMoviesViewModel @Inject constructor(
-  @Prod private val repository: MoviesRepository,
+  private val repository: MoviesRepository,
   private val navHostController: NavHostController,
 ) : ViewModel() {
   private val _state = MutableStateFlow(PopularMoviesViewState())

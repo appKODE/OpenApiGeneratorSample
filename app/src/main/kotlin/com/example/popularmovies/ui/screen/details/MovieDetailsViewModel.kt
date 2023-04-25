@@ -3,7 +3,6 @@ package com.example.popularmovies.ui.screen.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.example.popularmovies.di.Prod
 import com.example.popularmovies.domain.MoviesRepository
 import com.example.popularmovies.domain.entity.MovieId
 import com.example.popularmovies.ui.screen.mapper.toUiModel
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-  @Prod private val repository: MoviesRepository,
+  private val repository: MoviesRepository,
   navHostController: NavHostController
 ) : ViewModel() {
 
